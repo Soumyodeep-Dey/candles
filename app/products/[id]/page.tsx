@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, use } from "react"
 import { Navigation } from "@/components/navigation"
 import { ProductImageGallery } from "@/components/product-image-gallery"
 import { Button } from "@/components/ui/button"
@@ -24,10 +24,18 @@ interface ProductPageProps {
 export default function ProductPage({ params }: ProductPageProps) {
   const [quantity, setQuantity] = useState(1)
 
+  // Migration-safe: handle both Promise and object for params
+  let id: string
+  if (typeof (params as unknown as Promise<{ id: string }>).then === "function") {
+    id = use(params as unknown as Promise<{ id: string }>).id
+  } else {
+    id = (params as { id: string }).id
+  }
+
   const { dispatch } = useCart()
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist()
   const { addToRecentlyViewed } = useRecentlyViewed()
-  const product = getProductById(params.id)
+  const product = getProductById(id)
 
   if (!product) {
     notFound()
@@ -37,7 +45,7 @@ export default function ProductPage({ params }: ProductPageProps) {
     if (product) {
       addToRecentlyViewed(product)
     }
-  }, [product]) // Updated dependency array
+  }, [product, addToRecentlyViewed]) // Added missing dependency
 
   const handleAddToCart = () => {
     dispatch({ type: "ADD_ITEM", product, quantity })
@@ -78,11 +86,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                     variant="ghost"
                     size="icon"
                     onClick={handleWishlistToggle}
-                    className={`transition-colors ${
-                      isInWishlist(product.id)
+                    className={`transition-colors ${isInWishlist(product.id)
                         ? "text-red-600 hover:text-red-700 hover:bg-red-50"
                         : "hover:text-red-600 hover:bg-red-50"
-                    }`}
+                      }`}
                   >
                     <Heart className={`h-5 w-5 ${isInWishlist(product.id) ? "fill-current" : ""}`} />
                   </Button>
@@ -173,11 +180,10 @@ export default function ProductPage({ params }: ProductPageProps) {
                   variant="outline"
                   size="lg"
                   onClick={handleWishlistToggle}
-                  className={`${
-                    isInWishlist(product.id)
+                  className={`${isInWishlist(product.id)
                       ? "bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
                       : "hover:bg-accent"
-                  }`}
+                    }`}
                 >
                   <Heart className={`h-5 w-5 mr-2 ${isInWishlist(product.id) ? "fill-current" : ""}`} />
                   {isInWishlist(product.id) ? "Remove from Wishlist" : "Add to Wishlist"}
