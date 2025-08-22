@@ -1,6 +1,7 @@
 import { Navigation } from "@/components/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Heart, Leaf, Flame, Users } from "lucide-react"
+import Image from "next/image"
 
 export default function AboutPage() {
   const values = [
@@ -47,7 +48,13 @@ export default function AboutPage() {
         {/* Story Section */}
         <div className="grid lg:grid-cols-2 gap-12 items-center mb-20">
           <div>
-            <img src="/candle-making-process.png" alt="Candle making process" className="w-full rounded-lg shadow-lg" />
+            <Image
+              src="/candle-making-process.png"
+              alt="Candle making process"
+              width={800}
+              height={600}
+              className="w-full rounded-lg shadow-lg"
+            />
           </div>
           <div className="space-y-6">
             <h2 className="font-serif text-3xl font-bold">The Beginning</h2>
@@ -58,7 +65,7 @@ export default function AboutPage() {
             </p>
             <p className="text-muted-foreground leading-relaxed">
               What began as a hobby quickly became a passion. Friends and family were amazed by the quality and beauty
-              of Sarah's handcrafted candles, encouraging her to share her creations with the world. Today, Luminous
+              of Sarah&apos;s handcrafted candles, encouraging her to share her creations with the world. Today, Luminous
               Candles continues to honor that original vision of creating exceptional candles that transform any space
               into a sanctuary.
             </p>
@@ -141,7 +148,13 @@ export default function AboutPage() {
             </div>
           </div>
           <div className="lg:order-1">
-            <img src="/artisan-workspace.png" alt="Artisan workspace" className="w-full rounded-lg shadow-lg" />
+            <Image
+              src="/artisan-workspace.png"
+              alt="Artisan workspace"
+              width={800}
+              height={600}
+              className="w-full rounded-lg shadow-lg"
+            />
           </div>
         </div>
 

@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card"
 import { useCart } from "@/lib/cart-context"
 import { Minus, Plus, Trash2, ShoppingBag } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function CartPage() {
   const { state, dispatch } = useCart()
@@ -26,7 +27,7 @@ export default function CartPage() {
           <ShoppingBag className="h-24 w-24 mx-auto text-muted-foreground mb-6" />
           <h1 className="font-serif text-3xl font-bold mb-4">Your Cart is Empty</h1>
           <p className="text-muted-foreground mb-8 max-w-md mx-auto">
-            Looks like you haven't added any candles to your cart yet. Browse our collections to find the perfect
+            Looks like you haven&apos;t added any candles to your cart yet. Browse our collections to find the perfect
             candles for your space.
           </p>
           <Button asChild size="lg">
@@ -52,9 +53,11 @@ export default function CartPage() {
                 <CardContent className="p-6">
                   <div className="flex gap-4">
                     <div className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
+                      <Image
                         src={item.product.images[0] || "/placeholder.svg"}
                         alt={item.product.name}
+                        width={96}
+                        height={96}
                         className="w-full h-full object-cover"
                       />
                     </div>

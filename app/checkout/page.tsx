@@ -14,6 +14,7 @@ import { useCart } from "@/lib/cart-context"
 import { ArrowLeft, CreditCard, Truck, Shield } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import Image from "next/image"
 
 export default function CheckoutPage() {
   const { state, dispatch } = useCart()
@@ -220,13 +221,13 @@ export default function CheckoutPage() {
                 <div className="space-y-3">
                   {state.items.map((item) => (
                     <div key={item.product.id} className="flex gap-3">
-                      <div className="w-16 h-16 rounded-md overflow-hidden flex-shrink-0">
-                        <img
-                          src={item.product.images[0] || "/placeholder.svg"}
-                          alt={item.product.name}
-                          className="w-full h-full object-cover"
-                        />
-                      </div>
+                      <Image
+                        src={item.product.images[0] || "/placeholder.svg"}
+                        alt={item.product.name}
+                        width={64}
+                        height={64}
+                        className="w-full h-full object-cover"
+                      />
                       <div className="flex-1">
                         <h4 className="font-medium text-sm">{item.product.name}</h4>
                         <p className="text-xs text-muted-foreground">Qty: {item.quantity}</p>

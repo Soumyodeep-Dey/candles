@@ -8,12 +8,14 @@ import { Heart, ShoppingCart, Trash2 } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
 
+import type { Product } from "@/lib/products";
+
 export default function WishlistPage() {
   const { state: wishlistState, removeFromWishlist, clearWishlist } = useWishlist()
-  const { addToCart } = useCart()
+  const { dispatch } = useCart()
 
-  const handleAddToCart = (product: any) => {
-    addToCart(product, 1)
+  const handleAddToCart = (product: Product) => {
+    dispatch({ type: "ADD_ITEM", product, quantity: 1 })
   }
 
   if (wishlistState.items.length === 0) {
@@ -56,7 +58,7 @@ export default function WishlistPage() {
             <CardContent className="p-0">
               <div className="relative aspect-square overflow-hidden rounded-t-lg">
                 <Image
-                  src={product.image || "/placeholder.svg"}
+                  src={product.images?.[0] || "/placeholder.svg"}
                   alt={product.name}
                   fill
                   className="object-cover group-hover:scale-105 transition-transform duration-300"

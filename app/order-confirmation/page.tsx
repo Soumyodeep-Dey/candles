@@ -16,7 +16,7 @@ export default function OrderConfirmationPage() {
           <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-6" />
           <h1 className="font-serif text-3xl font-bold mb-4">Order Confirmed!</h1>
           <p className="text-lg text-muted-foreground mb-8">
-            Thank you for your order. We've received your request and will begin processing it shortly.
+            Thank you for your order. We&apos;ve received your request and will begin processing it shortly.
           </p>
 
           <Card className="mb-8">

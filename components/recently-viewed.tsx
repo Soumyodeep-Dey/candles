@@ -19,15 +19,69 @@ export function RecentlyViewed() {
     return null
   }
 
-  const handleAddToCart = (product: any) => {
-    dispatch({ type: "ADD_ITEM", product, quantity: 1 })
+  const allowedSizes = ["small", "medium", "large"] as const;
+  type Size = typeof allowedSizes[number];
+  type Product = {
+    id: string;
+    name: string;
+    image?: string;
+    category: "scented" | "decorative" | "seasonal";
+    scentType?: string;
+    price: number;
+    inStock: boolean;
+    description: string;
+    images: string[];
+    size: Size;
+    burnTime: string;
+    // Add other properties as needed
+  };
+
+  const handleAddToCart = (product: Product) => {
+    const allowedScentTypes = [
+      "floral",
+      "citrus",
+      "woody",
+      "vanilla",
+      "fresh",
+      "spicy",
+    ] as const;
+
+    const mappedProduct = {
+      ...product,
+      scentType: product.scentType && allowedScentTypes.includes(product.scentType as typeof allowedScentTypes[number])
+        ? (product.scentType as typeof allowedScentTypes[number])
+        : undefined,
+      size: product.size && allowedSizes.includes(product.size as Size)
+        ? (product.size as Size)
+        : "small" as Size, // fallback to a default size if not valid
+    };
+    dispatch({ type: "ADD_ITEM", product: mappedProduct, quantity: 1 });
   }
 
-  const handleWishlistToggle = (product: any) => {
+  const allowedScentTypes = [
+    "floral",
+    "citrus",
+    "woody",
+    "vanilla",
+    "fresh",
+    "spicy",
+  ] as const;
+
+  const handleWishlistToggle = (product: Product) => {
     if (isInWishlist(product.id)) {
       removeFromWishlist(product.id)
     } else {
-      addToWishlist(product)
+      // Ensure scentType and size match the allowed union types
+      const mappedProduct = {
+        ...product,
+        scentType: product.scentType && allowedScentTypes.includes(product.scentType as typeof allowedScentTypes[number])
+          ? (product.scentType as typeof allowedScentTypes[number])
+          : undefined,
+        size: product.size && allowedSizes.includes(product.size as Size)
+          ? (product.size as Size)
+          : "small" as Size, // fallback to a default size if not valid
+      };
+      addToWishlist(mappedProduct);
     }
   }
 
@@ -37,7 +91,7 @@ export function RecentlyViewed() {
         <div className="flex items-center justify-between mb-8">
           <div>
             <h2 className="font-serif text-3xl font-bold mb-2">Recently Viewed</h2>
-            <p className="text-muted-foreground">Products you've recently explored</p>
+            <p className="text-muted-foreground">Products you&apos;ve recently explored</p>
           </div>
           <Button variant="outline" onClick={clearRecentlyViewed} className="text-sm bg-transparent">
             Clear History
@@ -50,7 +104,7 @@ export function RecentlyViewed() {
               <div className="relative overflow-hidden rounded-t-lg">
                 <Link href={`/products/${product.id}`}>
                   <Image
-                    src={product.image || "/placeholder.svg"}
+                    src={product.images && product.images.length > 0 ? product.images[0] : "/placeholder.svg"}
                     alt={product.name}
                     width={300}
                     height={300}

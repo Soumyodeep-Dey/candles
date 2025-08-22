@@ -49,7 +49,7 @@ export function RelatedProducts({ currentProduct }: RelatedProductsProps) {
                 <Link href={`/products/${product.id}`}>
                   <div className="relative h-48 bg-gradient-to-br from-background to-muted">
                     <Image
-                      src={product.image || "/placeholder.svg"}
+                      src={product.images?.[0] || "/placeholder.svg"}
                       alt={product.name}
                       fill
                       className="object-cover transition-transform duration-300 group-hover:scale-105"

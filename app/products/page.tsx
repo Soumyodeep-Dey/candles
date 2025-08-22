@@ -16,6 +16,7 @@ import { useCart } from "@/lib/cart-context"
 import { useWishlist } from "@/lib/wishlist-context" // Added wishlist hook
 import { ShoppingCart, Filter, X, Eye, Search, Heart } from "lucide-react" // Added Heart icon
 import Link from "next/link"
+import Image from "next/image"
 
 export default function ProductsPage() {
   const [searchQuery, setSearchQuery] = useState<string>("")
@@ -221,9 +222,11 @@ export default function ProductsPage() {
                   <div className="relative">
                     <Link href={`/products/${product.id}`}>
                       <div className="aspect-square overflow-hidden rounded-t-lg relative">
-                        <img
+                        <Image
                           src={product.images[0] || "/placeholder.svg"}
                           alt={product.name}
+                          width={400}
+                          height={400}
                           className="w-full h-full object-cover transition-transform duration-500 ease-out group-hover:scale-105"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300" />
@@ -250,11 +253,10 @@ export default function ProductsPage() {
                       <Button
                         size="sm"
                         variant="secondary"
-                        className={`h-9 w-9 p-0 shadow-lg backdrop-blur-sm transition-colors ${
-                          isInWishlist(product.id)
+                        className={`h-9 w-9 p-0 shadow-lg backdrop-blur-sm transition-colors ${isInWishlist(product.id)
                             ? "bg-red-50 hover:bg-red-100 text-red-600"
                             : "bg-white/95 hover:bg-white"
-                        }`}
+                          }`}
                         onClick={(e) => handleWishlistToggle(product, e)}
                       >
                         <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? "fill-current" : ""}`} />
@@ -313,11 +315,10 @@ export default function ProductsPage() {
                             size="sm"
                             variant="outline"
                             onClick={(e) => handleWishlistToggle(product, e)}
-                            className={`shrink-0 lg:hidden ${
-                              isInWishlist(product.id)
+                            className={`shrink-0 lg:hidden ${isInWishlist(product.id)
                                 ? "bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
                                 : "hover:bg-accent"
-                            }`}
+                              }`}
                           >
                             <Heart className={`h-4 w-4 ${isInWishlist(product.id) ? "fill-current" : ""}`} />
                           </Button>

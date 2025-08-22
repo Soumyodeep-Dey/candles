@@ -69,7 +69,7 @@ export default function ContactPage() {
         <div className="text-center mb-16">
           <h1 className="font-serif text-4xl md:text-5xl font-bold mb-6">Get in Touch</h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            We&apos;d love to hear from you. Send us a message and we&apos;ll respond as soon as possible.
           </p>
         </div>
 
@@ -88,7 +88,7 @@ export default function ContactPage() {
                     </div>
                     <h3 className="font-semibold text-lg mb-2">Message Sent!</h3>
                     <p className="text-muted-foreground">
-                      Thank you for reaching out. We'll get back to you within 24 hours.
+                      Thank you for reaching out. We&apos;ll get back to you within 24 hours.
                     </p>
                     <Button variant="outline" onClick={() => setIsSubmitted(false)} className="mt-4 bg-transparent">
                       Send Another Message
@@ -199,9 +199,9 @@ export default function ContactPage() {
                   </p>
                 </div>
                 <div>
-                  <h4 className="font-semibold mb-2">What's your return policy?</h4>
+                  <h4 className="font-semibold mb-2">What&apos;s your return policy?</h4>
                   <p className="text-muted-foreground text-sm">
-                    We offer a 30-day satisfaction guarantee. If you're not happy with your purchase, we'll make it
+                    We offer a 30-day satisfaction guarantee. If you&apos;re not happy with your purchase, we&apos;ll make it
                     right.
                   </p>
                 </div>

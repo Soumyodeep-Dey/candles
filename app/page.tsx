@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowRight, Flame, Heart, Sparkles } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 export default function HomePage() {
   const collections = [
@@ -96,9 +97,11 @@ export default function HomePage() {
                 className="group hover:shadow-lg transition-all duration-300 border-border/50 hover:border-primary/20"
               >
                 <div className="aspect-[4/3] overflow-hidden rounded-t-lg">
-                  <img
+                  <Image
                     src={collection.image || "/placeholder.svg"}
                     alt={collection.title}
+                    width={400}
+                    height={300}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>

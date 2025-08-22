@@ -8,6 +8,7 @@ import { ShoppingCart } from "lucide-react"
 import type { Product } from "@/lib/products"
 import { useCart } from "@/lib/cart-context"
 import Link from "next/link"
+import Image from "next/image"
 
 interface QuickViewModalProps {
   product: Product | null
@@ -37,9 +38,11 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
           {/* Product Images */}
           <div className="space-y-4">
             <div className="aspect-square overflow-hidden rounded-lg bg-gray-50">
-              <img
+              <Image
                 src={product.images[selectedImageIndex] || "/placeholder.svg"}
                 alt={product.name}
+                width={400}
+                height={400}
                 className="w-full h-full object-cover"
               />
             </div>
@@ -49,13 +52,14 @@ export function QuickViewModal({ product, isOpen, onClose }: QuickViewModalProps
                   <button
                     key={index}
                     onClick={() => setSelectedImageIndex(index)}
-                    className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${
-                      selectedImageIndex === index ? "border-primary" : "border-gray-200"
-                    }`}
+                    className={`flex-shrink-0 w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${selectedImageIndex === index ? "border-primary" : "border-gray-200"
+                      }`}
                   >
-                    <img
+                    <Image
                       src={image || "/placeholder.svg"}
                       alt={`${product.name} ${index + 1}`}
+                      width={64}
+                      height={64}
                       className="w-full h-full object-cover"
                     />
                   </button>

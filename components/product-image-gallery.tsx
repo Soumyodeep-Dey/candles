@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { ChevronLeft, ChevronRight, ZoomIn } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
@@ -25,12 +26,13 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
     <div className="space-y-4">
       {/* Main Image */}
       <div className="relative aspect-square overflow-hidden rounded-lg border bg-muted group">
-        <img
+        <Image
           src={images[selectedImage] || "/placeholder.svg"}
           alt={`${productName} - View ${selectedImage + 1}`}
-          className={`w-full h-full object-cover transition-transform duration-300 ${
-            isZoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
-          }`}
+          width={600}
+          height={600}
+          className={`w-full h-full object-cover transition-transform duration-300 ${isZoomed ? "scale-150 cursor-zoom-out" : "cursor-zoom-in"
+            }`}
           onClick={() => setIsZoomed(!isZoomed)}
         />
 
@@ -76,15 +78,16 @@ export function ProductImageGallery({ images, productName }: ProductImageGallery
             <button
               key={index}
               onClick={() => setSelectedImage(index)}
-              className={`aspect-square overflow-hidden rounded-md border-2 transition-all duration-200 hover:border-primary/50 ${
-                selectedImage === index
+              className={`aspect-square overflow-hidden rounded-md border-2 transition-all duration-200 hover:border-primary/50 ${selectedImage === index
                   ? "border-primary ring-2 ring-primary/20"
                   : "border-border hover:border-primary/30"
-              }`}
+                }`}
             >
-              <img
+              <Image
                 src={image || "/placeholder.svg"}
                 alt={`${productName} thumbnail ${index + 1}`}
+                width={150}
+                height={150}
                 className="w-full h-full object-cover transition-transform duration-200 hover:scale-105"
               />
             </button>

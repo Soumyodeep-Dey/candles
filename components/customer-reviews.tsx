@@ -97,7 +97,7 @@ export function CustomerReviews() {
                     ))}
                   </div>
                   <blockquote className="text-lg md:text-xl text-foreground mb-6 leading-relaxed font-medium">
-                    "{review.comment}"
+                    &quot;{review.comment}&quot;
                   </blockquote>
                   <div>
                     <p className="font-semibold text-foreground">{review.name}</p>
