@@ -1,8 +1,9 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter, Playfair_Display } from "next/font/google" // Updated fonts for elegant candle business
-import { ThemeProvider } from "@/components/theme-provider"
 import { CartProvider } from "@/lib/cart-context" // Added cart provider
+import { WishlistProvider } from "@/lib/wishlist-context" // Added WishlistProvider import
+import { RecentlyViewedProvider } from "@/lib/recently-viewed-context" // Added RecentlyViewedProvider import
 import "./globals.css"
 
 const inter = Inter({
@@ -32,9 +33,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${inter.variable} ${playfair.variable} font-sans antialiased`}>
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange={false}>
-          <CartProvider>{children}</CartProvider>
-        </ThemeProvider>
+        <RecentlyViewedProvider>
+          <WishlistProvider>
+            <CartProvider>{children}</CartProvider>
+          </WishlistProvider>
+        </RecentlyViewedProvider>
       </body>
     </html>
   )

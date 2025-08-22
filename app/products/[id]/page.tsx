@@ -1,15 +1,19 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Navigation } from "@/components/navigation"
+import { ProductImageGallery } from "@/components/product-image-gallery"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { getProductById } from "@/lib/products"
-import { useCart } from "@/lib/cart-context" // Added cart hook
+import { useCart } from "@/lib/cart-context"
+import { useWishlist } from "@/lib/wishlist-context"
+import { useRecentlyViewed } from "@/lib/recently-viewed-context"
 import { ShoppingCart, Heart, Share2, ArrowLeft, Star } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
+import { RelatedProducts } from "@/components/related-products"
 
 interface ProductPageProps {
   params: {
@@ -18,18 +22,33 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
-  const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
 
-  const { dispatch } = useCart() // Get cart dispatch function
+  const { dispatch } = useCart()
+  const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist()
+  const { addToRecentlyViewed } = useRecentlyViewed()
   const product = getProductById(params.id)
 
   if (!product) {
     notFound()
   }
 
+  useEffect(() => {
+    if (product) {
+      addToRecentlyViewed(product)
+    }
+  }, [product]) // Updated dependency array
+
   const handleAddToCart = () => {
     dispatch({ type: "ADD_ITEM", product, quantity })
+  }
+
+  const handleWishlistToggle = () => {
+    if (isInWishlist(product.id)) {
+      removeFromWishlist(product.id)
+    } else {
+      addToWishlist(product)
+    }
   }
 
   return (
@@ -47,36 +66,7 @@ export default function ProductPage({ params }: ProductPageProps) {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-12">
-          {/* Product Images */}
-          <div className="space-y-4">
-            <div className="aspect-square overflow-hidden rounded-lg border">
-              <img
-                src={product.images[selectedImage] || "/placeholder.svg"}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
-            </div>
-
-            {product.images.length > 1 && (
-              <div className="flex gap-2">
-                {product.images.map((image, index) => (
-                  <button
-                    key={index}
-                    onClick={() => setSelectedImage(index)}
-                    className={`aspect-square w-20 overflow-hidden rounded-md border-2 transition-colors ${
-                      selectedImage === index ? "border-primary" : "border-border"
-                    }`}
-                  >
-                    <img
-                      src={image || "/placeholder.svg"}
-                      alt={`${product.name} view ${index + 1}`}
-                      className="w-full h-full object-cover"
-                    />
-                  </button>
-                ))}
-              </div>
-            )}
-          </div>
+          <ProductImageGallery images={product.images} productName={product.name} />
 
           {/* Product Details */}
           <div className="space-y-6">
@@ -84,8 +74,17 @@ export default function ProductPage({ params }: ProductPageProps) {
               <div className="flex items-start justify-between mb-2">
                 <h1 className="font-serif text-3xl font-bold">{product.name}</h1>
                 <div className="flex gap-2">
-                  <Button variant="ghost" size="icon">
-                    <Heart className="h-5 w-5" />
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={handleWishlistToggle}
+                    className={`transition-colors ${
+                      isInWishlist(product.id)
+                        ? "text-red-600 hover:text-red-700 hover:bg-red-50"
+                        : "hover:text-red-600 hover:bg-red-50"
+                    }`}
+                  >
+                    <Heart className={`h-5 w-5 ${isInWishlist(product.id) ? "fill-current" : ""}`} />
                   </Button>
                   <Button variant="ghost" size="icon">
                     <Share2 className="h-5 w-5" />
@@ -166,17 +165,22 @@ export default function ProductPage({ params }: ProductPageProps) {
               </div>
 
               <div className="flex gap-4">
-                <Button
-                  size="lg"
-                  className="flex-1"
-                  disabled={!product.inStock}
-                  onClick={handleAddToCart} // Added click handler
-                >
+                <Button size="lg" className="flex-1" disabled={!product.inStock} onClick={handleAddToCart}>
                   <ShoppingCart className="h-5 w-5 mr-2" />
                   Add to Cart - ${(product.price * quantity).toFixed(2)}
                 </Button>
-                <Button variant="outline" size="lg">
-                  Buy Now
+                <Button
+                  variant="outline"
+                  size="lg"
+                  onClick={handleWishlistToggle}
+                  className={`${
+                    isInWishlist(product.id)
+                      ? "bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+                      : "hover:bg-accent"
+                  }`}
+                >
+                  <Heart className={`h-5 w-5 mr-2 ${isInWishlist(product.id) ? "fill-current" : ""}`} />
+                  {isInWishlist(product.id) ? "Remove from Wishlist" : "Add to Wishlist"}
                 </Button>
               </div>
             </div>
@@ -193,6 +197,8 @@ export default function ProductPage({ params }: ProductPageProps) {
             </div>
           </div>
         </div>
+
+        <RelatedProducts currentProduct={product} />
       </div>
     </div>
   )

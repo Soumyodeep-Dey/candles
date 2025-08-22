@@ -2,14 +2,15 @@
 
 import Link from "next/link"
 import { useState } from "react"
-import { Menu, X, ShoppingCart } from "lucide-react"
+import { Menu, X, ShoppingCart, Heart } from "lucide-react"
 import { Button } from "@/components/ui/button"
-import { ThemeToggle } from "@/components/theme-toggle"
-import { useCart } from "@/lib/cart-context" // Added cart hook
+import { useCart } from "@/lib/cart-context"
+import { useWishlist } from "@/lib/wishlist-context"
 
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false)
-  const { state } = useCart() // Get cart state
+  const { state } = useCart()
+  const { state: wishlistState } = useWishlist()
 
   const navItems = [
     { href: "/", label: "Home" },
@@ -36,16 +37,29 @@ export function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-foreground/80 hover:text-foreground transition-colors font-medium"
+                className="relative text-foreground/80 hover:text-foreground transition-colors font-medium group"
               >
-                {item.label}
+                <span className="relative">
+                  {item.label}
+                  <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full"></span>
+                </span>
               </Link>
             ))}
           </div>
 
           {/* Right side actions */}
           <div className="flex items-center space-x-4">
-            <ThemeToggle />
+            <Button variant="ghost" size="icon" className="relative" asChild>
+              <Link href="/wishlist">
+                <Heart className="h-5 w-5" />
+                {wishlistState.itemCount > 0 && (
+                  <span className="absolute -top-1 -right-1 h-4 w-4 bg-accent text-accent-foreground rounded-full text-xs flex items-center justify-center">
+                    {wishlistState.itemCount}
+                  </span>
+                )}
+              </Link>
+            </Button>
+
             <Button variant="ghost" size="icon" className="relative" asChild>
               <Link href="/cart">
                 <ShoppingCart className="h-5 w-5" />
@@ -78,6 +92,22 @@ export function Navigation() {
                   {item.label}
                 </Link>
               ))}
+              <Link
+                href="/wishlist"
+                className="text-foreground/80 hover:text-foreground transition-colors font-medium px-2 py-1 flex items-center gap-2"
+                onClick={() => setIsOpen(false)}
+              >
+                <Heart className="h-4 w-4" />
+                Wishlist ({wishlistState.itemCount})
+              </Link>
+              <Link
+                href="/cart"
+                className="text-foreground/80 hover:text-foreground transition-colors font-medium px-2 py-1 flex items-center gap-2"
+                onClick={() => setIsOpen(false)}
+              >
+                <ShoppingCart className="h-4 w-4" />
+                Cart ({state.itemCount})
+              </Link>
             </div>
           </div>
         )}

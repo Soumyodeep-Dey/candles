@@ -126,3 +126,7 @@ export function getProductsByCategory(category: string): Product[] {
 export function getFeaturedProducts(): Product[] {
   return products.filter((product) => product.featured)
 }
+
+export function getAllProducts(): Product[] {
+  return products
+}

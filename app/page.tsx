@@ -1,4 +1,6 @@
 import { Navigation } from "@/components/navigation"
+import { CustomerReviews } from "@/components/customer-reviews"
+import { RecentlyViewed } from "@/components/recently-viewed" // Added recently viewed import
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { ArrowRight, Flame, Heart, Sparkles } from "lucide-react"
@@ -74,6 +76,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <RecentlyViewed />
+
       <section className="py-20 bg-background">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -107,8 +111,10 @@ export default function HomePage() {
                     </div>
                   </div>
                   <p className="text-muted-foreground mb-4 leading-relaxed">{collection.description}</p>
-                  <Button variant="ghost" className="w-full group-hover:bg-primary/5 transition-colors">
-                    Explore Collection <ArrowRight className="ml-2 h-4 w-4" />
+                  <Button asChild variant="ghost" className="w-full group-hover:bg-primary/5 transition-colors">
+                    <Link href={`/products?category=${collection.id}`}>
+                      Explore Collection <ArrowRight className="ml-2 h-4 w-4" />
+                    </Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -139,6 +145,18 @@ export default function HomePage() {
               </div>
             ))}
           </div>
+        </div>
+      </section>
+
+      <section className="py-20 bg-background">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="font-serif text-3xl md:text-4xl font-bold text-foreground mb-4">What Our Customers Say</h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Join thousands of satisfied customers who have transformed their spaces with our candles
+            </p>
+          </div>
+          <CustomerReviews />
         </div>
       </section>
 

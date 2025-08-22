@@ -1,80 +1,44 @@
 @import "tailwindcss";
 @import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
 :root {
-  /* Custom candle business light theme colors */
-  --background: #f1ede0; /* Candlelit Beige */
-  --foreground: #73351f; /* Burnt Umber for text */
-  --card: #f4ebd0; /* Crisp Candlelight */
-  --card-foreground: #73351f;
-  --popover: #f4ebd0;
-  --popover-foreground: #73351f;
-  --primary: #a65c32; /* Terracotta */
-  --primary-foreground: #f1ede0;
-  --secondary: #ecefbd; /* Complementary cream */
-  --secondary-foreground: #73351f;
-  --muted: #f2e0ca; /* Cream variant */
-  --muted-foreground: #a65c32;
-  --accent: #f28b50; /* Coral accent */
-  --accent-foreground: #f1ede0;
-  --destructive: #400d0d; /* Deep Maroon for errors */
-  --destructive-foreground: #f1ede0;
-  --border: #ecefbd;
-  --input: #f4ebd0;
-  --ring: #a65c32;
-  --chart-1: #f28b50;
-  --chart-2: #a65c32;
-  --chart-3: #f2b872;
-  --chart-4: #73351f;
-  --chart-5: #400d0d;
+  /* Updated to elegant candle-inspired light theme with soft creams, golds, and lavender accents */
+  --background: #fefcf8; /* Warm ivory */
+  --foreground: #4a4a4a; /* Soft charcoal for text */
+  --card: #f9f6f0; /* Cream white */
+  --card-foreground: #4a4a4a;
+  --popover: #f9f6f0;
+  --popover-foreground: #4a4a4a;
+  --primary: #d4af37; /* Warm gold */
+  --primary-foreground: #fefcf8;
+  --secondary: #f5f0e8; /* Soft cream */
+  --secondary-foreground: #4a4a4a;
+  --muted: #f0ebe3; /* Light beige */
+  --muted-foreground: #8b8680;
+  --accent: #c9a96e; /* Soft champagne gold */
+  --accent-foreground: #4a4a4a;
+  --destructive: #dc2626; /* Clean red for errors */
+  --destructive-foreground: #fefcf8;
+  --border: #e8e0d6;
+  --input: #f9f6f0;
+  --ring: #d4af37;
+  --chart-1: #d4af37;
+  --chart-2: #c9a96e;
+  --chart-3: #f4e4bc;
+  --chart-4: #8b8680;
+  --chart-5: #4a4a4a;
   --radius: 0.625rem;
-  --sidebar: #f4ebd0;
-  --sidebar-foreground: #73351f;
-  --sidebar-primary: #a65c32;
-  --sidebar-primary-foreground: #f1ede0;
-  --sidebar-accent: #ecefbd;
-  --sidebar-accent-foreground: #73351f;
-  --sidebar-border: #ecefbd;
-  --sidebar-ring: #a65c32;
+  --sidebar: #f9f6f0;
+  --sidebar-foreground: #4a4a4a;
+  --sidebar-primary: #d4af37;
+  --sidebar-primary-foreground: #fefcf8;
+  --sidebar-accent: #f5f0e8;
+  --sidebar-accent-foreground: #4a4a4a;
+  --sidebar-border: #e8e0d6;
+  --sidebar-ring: #d4af37;
 }
 
-.dark {
-  /* Custom candle business dark theme colors */
-  --background: #400d0d; /* Deep Maroon */
-  --foreground: #f2b872; /* Apricot for text */
-  --card: #73351f; /* Burnt Umber */
-  --card-foreground: #f2b872;
-  --popover: #73351f;
-  --popover-foreground: #f2b872;
-  --primary: #f28b50; /* Coral */
-  --primary-foreground: #400d0d;
-  --secondary: #a65c32; /* Terracotta */
-  --secondary-foreground: #f2b872;
-  --muted: #73351f;
-  --muted-foreground: #f2b872;
-  --accent: #f2b872; /* Apricot accent */
-  --accent-foreground: #400d0d;
-  --destructive: #f28b50;
-  --destructive-foreground: #400d0d;
-  --border: #a65c32;
-  --input: #73351f;
-  --ring: #f28b50;
-  --chart-1: #f2b872;
-  --chart-2: #f28b50;
-  --chart-3: #a65c32;
-  --chart-4: #73351f;
-  --chart-5: #400d0d;
-  --sidebar: #73351f;
-  --sidebar-foreground: #f2b872;
-  --sidebar-primary: #f28b50;
-  --sidebar-primary-foreground: #400d0d;
-  --sidebar-accent: #a65c32;
-  --sidebar-accent-foreground: #f2b872;
-  --sidebar-border: #a65c32;
-  --sidebar-ring: #f28b50;
-}
+/* Removed all dark mode CSS variables and selectors */
 
 @theme inline {
   --color-background: var(--background);
@@ -118,7 +82,7 @@
 @layer base {
   * {
     @apply border-border outline-ring/50;
-    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; /* Smooth theme transitions */
+    /* Removed theme transition since we only have light mode now */
   }
   body {
     @apply bg-background text-foreground;
