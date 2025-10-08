@@ -6,7 +6,7 @@ import { ProductImageGallery } from "@/components/product-image-gallery"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
-import { getProductById } from "@/lib/products"
+import { type Product } from "@/lib/products"
 import { useCart } from "@/lib/cart-context"
 import { useWishlist } from "@/lib/wishlist-context"
 import { useRecentlyViewed } from "@/lib/recently-viewed-context"
@@ -22,6 +22,8 @@ interface ProductPageProps {
 }
 
 export default function ProductPage({ params }: ProductPageProps) {
+  const [product, setProduct] = useState<Product | null>(null)
+  const [loading, setLoading] = useState(true)
   const [quantity, setQuantity] = useState(1)
 
   // Migration-safe: handle both Promise and object for params
@@ -35,11 +37,30 @@ export default function ProductPage({ params }: ProductPageProps) {
   const { dispatch } = useCart()
   const { addToWishlist, removeFromWishlist, isInWishlist } = useWishlist()
   const { addToRecentlyViewed } = useRecentlyViewed()
-  const product = getProductById(id)
 
-  if (!product) {
-    notFound()
-  }
+  useEffect(() => {
+    async function fetchProduct() {
+      try {
+        setLoading(true)
+        const response = await fetch(`/api/candles/${id}`)
+        if (!response.ok) {
+          if (response.status === 404) {
+            notFound()
+          }
+          throw new Error('Failed to fetch product')
+        }
+        const productData = await response.json()
+        setProduct(productData)
+      } catch (error) {
+        console.error('Error fetching product:', error)
+        notFound()
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchProduct()
+  }, [id])
 
   useEffect(() => {
     if (product) {
@@ -48,15 +69,39 @@ export default function ProductPage({ params }: ProductPageProps) {
   }, [product, addToRecentlyViewed]) // Added missing dependency
 
   const handleAddToCart = () => {
-    dispatch({ type: "ADD_ITEM", product, quantity })
+    if (product) {
+      dispatch({ type: "ADD_ITEM", product, quantity })
+    }
   }
 
   const handleWishlistToggle = () => {
-    if (isInWishlist(product.id)) {
-      removeFromWishlist(product.id)
-    } else {
-      addToWishlist(product)
+    if (product) {
+      if (isInWishlist(product.id)) {
+        removeFromWishlist(product.id)
+      } else {
+        addToWishlist(product)
+      }
     }
+  }
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <Navigation />
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex items-center justify-center min-h-[400px]">
+            <div className="text-center">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+              <p className="text-muted-foreground">Loading product...</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    )
+  }
+
+  if (!product) {
+    notFound()
   }
 
   return (
@@ -87,8 +132,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                     size="icon"
                     onClick={handleWishlistToggle}
                     className={`transition-colors ${isInWishlist(product.id)
-                        ? "text-red-600 hover:text-red-700 hover:bg-red-50"
-                        : "hover:text-red-600 hover:bg-red-50"
+                      ? "text-red-600 hover:text-red-700 hover:bg-red-50"
+                      : "hover:text-red-600 hover:bg-red-50"
                       }`}
                   >
                     <Heart className={`h-5 w-5 ${isInWishlist(product.id) ? "fill-current" : ""}`} />
@@ -181,8 +226,8 @@ export default function ProductPage({ params }: ProductPageProps) {
                   size="lg"
                   onClick={handleWishlistToggle}
                   className={`${isInWishlist(product.id)
-                      ? "bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
-                      : "hover:bg-accent"
+                    ? "bg-red-50 hover:bg-red-100 text-red-600 border-red-200"
+                    : "hover:bg-accent"
                     }`}
                 >
                   <Heart className={`h-5 w-5 mr-2 ${isInWishlist(product.id) ? "fill-current" : ""}`} />
